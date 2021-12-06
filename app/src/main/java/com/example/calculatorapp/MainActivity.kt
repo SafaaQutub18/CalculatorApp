@@ -11,10 +11,10 @@ import com.example.calculatorapp.databinding.CalButtonsBinding
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var resultTV : TextView
-    lateinit var inputTV : TextView
-    lateinit var btnsView : CalButtonsBinding
-    lateinit var binding : ActivityMainBinding
+    lateinit var resultTV: TextView
+    lateinit var inputTV: TextView
+    lateinit var btnsView: CalButtonsBinding
+    lateinit var binding: ActivityMainBinding
     var firstNum = ""
     var oprator = ""
     var secNum = ""
@@ -33,29 +33,34 @@ class MainActivity : AppCompatActivity() {
 
 
         btnsView.equalBt.setOnClickListener {
-            try{
-            when (oprator) {
-                "/" -> result = firstNum.toDouble() / secNum.toDouble()
-                "*" -> result = firstNum.toDouble() * secNum.toDouble()
-                "-" -> result = firstNum.toDouble() - secNum.toDouble()
-                "+" -> result = firstNum.toDouble() + secNum.toDouble()
+            try {
+                when (oprator) {
+                    "/" ->{ if(secNum.toDouble() != 0.0)
+                                result = firstNum.toDouble() / secNum.toDouble()
+                            else
+                        Toast.makeText(this, "you cannot divide by 0!", Toast.LENGTH_LONG).show()
+                    }
+                    "*" -> result = firstNum.toDouble() * secNum.toDouble()
+                    "-" -> result = firstNum.toDouble() - secNum.toDouble()
+                    "+" -> result = firstNum.toDouble() + secNum.toDouble()
+                }
+            } catch (e: Exception) {
+                inputTV.setText("")
+                Toast.makeText(this, "something is wrong!", Toast.LENGTH_LONG).show()
             }
-                } catch (e: Exception){
-                    inputTV.setText("")
-                    Toast.makeText(this, "please enter integer number!", Toast.LENGTH_LONG).show()
-        }
             resultTV.setText(result.toString())
         }
         btnsView.clearBt.setOnClickListener {
-            firstNum = "" ; oprator = "";  secNum = ""; result = 0.0; isClear = true
+            firstNum = ""; oprator = ""; secNum = ""; result = 0.0; isClear = true
             inputTV.setText(""); resultTV.setText("")
         }
     }
-    fun numberEvents(view:View){
+
+    fun numberEvents(view: View) {
         var inputString = inputTV.text.toString()
         val selectedButton = view as Button
         btnsView.apply {
-            when(selectedButton.id){
+            when (selectedButton.id) {
                 zeroBt.id -> inputString += "0"
                 oneBt.id -> inputString += "1"
                 twoBt.id -> inputString += "2"
@@ -79,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun opratorEvents(view: View) {
-        if(oprator != "") {
+        if (oprator != "") {
             firstNum = result.toString()
             inputTV.setText(firstNum)
         }
